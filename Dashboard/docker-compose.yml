@@ -1,0 +1,8 @@
+version: '3'
+services:
+  dashboard:
+    build: .
+    environment:
+      AKEY_OPENWEATHER: "${AKEY_OPENWEATHER}"
+    ports:
+      - 80:3000
