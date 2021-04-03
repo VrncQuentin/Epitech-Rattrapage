@@ -4,7 +4,7 @@ import requester from "./requester";
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather"
 const apiKey = "7873ecdffb493b2dfc17178590f9f7cb"//process.env.AKEY_OPENWEATHER
 
-export const getLocalWeather = (location) => {
+const fetchLocalWeather = (location) => {
     return new Promise((resolve, reject) => {
         requester.get(baseUrl, {
             params: {
@@ -25,3 +25,13 @@ export const getLocalWeather = (location) => {
         })
     })
 }
+
+export const getLocalTemperature = (location) => {
+    return new Promise((resolve, reject) => {
+        fetchLocalWeather(location)
+            .then(res => resolve(res.temp))
+            .catch(err => reject(err))
+    })
+}
+
+export const getLocalWeather = fetchLocalWeather;

@@ -1,14 +1,14 @@
-import React from 'react';
+import {useState} from 'react';
 
-import Connexion from './components/Login';
+import Connexion from './components/Login/Login';
 import Dashboard from "./components/Dashboard";
 
 
-function App() {
-    const [loggedIn, setLoggedIn] = React.useState(false)
+const App = () => {
+    const [user, setUser] = useState(null)
     return (
         <div className="app">
-            {loggedIn ? <Dashboard/> : <Connexion setLoggedIn={setLoggedIn}/>}
+            {user === null ? <Connexion setUser={setUser}/> : <Dashboard user={user}/>}
         </div>
   );
 }
