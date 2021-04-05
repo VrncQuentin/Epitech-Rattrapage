@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:password@db:5432/postgres"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+    id      String      @id
+    weather Weather?
+    spacex  SpaceX?
+    github  Github?
+
+}
+
+model Weather {
+    id      String      @id @default(uuid())
+    used    Boolean     @default(false)
+    temp    String      @default("")
+    weather String      @default("")
+    user    User        @relation(fields: [userId], references: [id])
+    userId  String
+}
+
+model SpaceX {
+    id      String      @id @default(uuid())
+    used    Boolean     @default(false)
+    latest  Boolean     @default(false)
+    next    Boolean     @default(false)
+    user    User        @relation(fields: [userId], references: [id])
+    userId  String
+    }
+
+model Github {
+    id      String      @id @default(uuid())
+    used    Boolean     @default(false)
+    repo    String      @default("")
+    user    User        @relation(fields: [userId], references: [id])
+    userId  String
+}

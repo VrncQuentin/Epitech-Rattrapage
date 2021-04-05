@@ -1,38 +1,36 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import TwitterIcon from '@material-ui/icons/Twitter';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import LoopIcon from '@material-ui/icons/Loop';
-import PersonIcon from '@material-ui/icons/Person';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {Button, Card, CardContent, Switch} from "@material-ui/core";
-import SettingsIcon from '@material-ui/icons/Settings';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 
-import './Dashboard.css';
 import {LatestLaunch, NextLaunch} from "./Widgets/SpaceX";
-import UserRepo from "./Widgets/GitHub";
 import Temperature from "./Widgets/Temperarture";
 import Weather from "./Widgets/Weather";
+import GitHub from "./Widgets/GitHub";
 
-const drawerWidth = 240;
+import {useAuth} from "../Auth/context";
+import * as back from '../APIs/back'
+import {Button, Card, Form} from "react-bootstrap";
+import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+
+
+const drawerWidth = 280;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -116,53 +114,201 @@ const DashboardAppBar = ({classes, toggleDrawer, drawerStatus}) => {
     )
 }
 
+const WeatherSettings = ({used, twu, wt, twt, ww, tww}) => {
+    const cityTempRef = useRef();
+    const cityWeatherRef = useRef();
 
-const useStyless = makeStyles({
-    root: {
-        height: 240,
-        flexGrow: 1,
-        maxWidth: 400,
-    },
-});
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (cityTempRef.current.value !== '') {
+            twt(cityTempRef.current.value)
+        }
+        if (cityWeatherRef.current.value !== '') {
+            tww(cityWeatherRef.current.value)
+        }
+    }
 
-const WidgetSettings = () => {
-    const classes = useStyless();
     return (
-        <TreeView
-            className={classes.root}
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}>
-            <TreeItem nodeId="1" label="Weather" icon={<WbSunnyIcon color={"primary"}/>}>
-                <TreeItem nodeId={"4"} label="Current Weather"/>
-            </TreeItem>
-            <TreeItem nodeId="2" label="Twitter" icon={<TwitterIcon color={"primary"}/>}>
-                <Card>
-                    <CardContent>
-                        Send Tweet
-                        <Button className="setting-button" variant={"contained"}><SettingsIcon color={"primary"}/></Button>
-                        <Switch />
-                    </CardContent>
-                </Card>
-                <TreeItem nodeId={"6"} label="See Feed"/>
-            </TreeItem>
-            <TreeItem nodeId="3" label="SpaceX"
-                      icon={<Brightness3Icon color={"primary"}/>}
-                      endIcon={<LoopIcon color={"primary"}/>}>
-                <TreeItem nodeId={"7"} label="Latest Launch"/>
-                <TreeItem nodeId={"8"} label="Next Launch"/>
-            </TreeItem>
-        </TreeView>
+        <TreeItem nodeId='1' label='Weather' icon={<WbSunnyIcon/>}>
+            <Card>
+                <BootstrapSwitchButton checked={used} onChange={twu}/>
+                {used &&
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group id="city-temp">
+                        <Form.Label>City Temperature</Form.Label> <Button onClick={() => twt('')}>Clear</Button>
+                        <Form.Control type="city" ref={cityTempRef} placeholder={wt}/>
+                    </Form.Group>
+                    <Form.Group id="city-weather">
+                        <Form.Label>City Weather</Form.Label> <Button onClick={() => tww('')}>Clear</Button>
+                        <Form.Control type="city" ref={cityWeatherRef} placeholder={ww}/>
+                    </Form.Group>
+                    <Button type='submit'>Use</Button>
+                </Form>}
+            </Card>
+        </TreeItem>
     )
 }
 
-const Dashboard = ({user}) => {
+const SpaceXSettings = ({used, tsu, sl, tsl, sn, tsn}) => {
+    return (
+        <TreeItem nodeId='2' label='SpaceX' icon={<Brightness3Icon/>}>
+            <Card>
+                <BootstrapSwitchButton checked={used} onChange={tsu}/>
+                {used &&
+                <Form>
+                    <Form.Group id="latest-flight">
+                        <Form.Label>Latest Flight</Form.Label>
+                        <BootstrapSwitchButton checked={sl} onChange={() => tsl()}/>
+                    </Form.Group>
+                    <Form.Group id="next-flight">
+                        <Form.Label>Next Flight</Form.Label>
+                        <BootstrapSwitchButton checked={sn} onChange={() => tsn()}/>
+                    </Form.Group>
+                </Form>}
+            </Card>
+        </TreeItem>
+    )
+}
+
+const GithubSettings = ({used, tgu, gr, tgr}) => {
+    const repoRef = useRef();
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (repoRef.current.value !== '') {
+            tgr(repoRef.current.value)
+        }
+    }
+
+    return (
+        <TreeItem nodeId='3' label='Github' icon={<GitHubIcon/>}>
+            <Card>
+                <BootstrapSwitchButton checked={used} onChange={tgu}/>
+                {used &&
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group id="repo">
+                        <Form.Label>Repository</Form.Label> <Button onClick={() => tgr('')}>Clear</Button>
+                        <Form.Control type="repo" ref={repoRef} placeholder={gr}/>
+                    </Form.Group>
+                    <Button type='submit'>Use</Button>
+                </Form>}
+            </Card>
+        </TreeItem>
+    )
+}
+
+const Dashboard = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const toggleDrawer = () => setOpen(!open);
 
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+    const {user} = useAuth();
+    const [wu, swu] = useState(false) // weather used
+    const twu = async () => {
+        try {
+            await back.updateUser(user.uid, {weather: {update: {used: !wu}}})
+            swu(!wu);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const [wt, swt] = useState('') // weather temp
+    const twt = async (s) => {
+        try {
+            await back.updateUser(user.uid, {weather: {update: {temp: s}}})
+            swt(s);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const [ww, sww] = useState('') // weather weather
+    const tww = async (s) => {
+        try {
+            await back.updateUser(user.uid, {weather: {update: {weather: s}}})
+            sww(s);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const [su, ssu] = useState(false) // spacex used
+    const tsu = async () => {
+        try {
+            await back.updateUser(user.uid, {spacex: {update: {used: !su}}})
+            ssu(!su);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const [sl, ssl] = useState(false) // spacex latest
+    const tsl = async () => {
+        try {
+            await back.updateUser(user.uid, {spacex: {update: {latest: !sl}}})
+            ssl(!sl);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const [sn, ssn] = useState(false) // spacex next
+    const tsn = async () => {
+        try {
+            await back.updateUser(user.uid, {spacex: {update: {next: !sn}}})
+            ssn(!sn);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const [gu, sgu] = useState(false) // github used
+    const tgu = async () => {
+        try {
+            await back.updateUser(user.uid, {github: {update: {used: !gu}}})
+            sgu(!gu);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const [gr, sgr] = useState('') // github repo
+    const tgr =  async (s) => {
+        try {
+            await back.updateUser(user.uid, {github: {update: {repo: s}}})
+            sgr(s);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+    const setUserInfos = (user) => {
+        console.log(user)
+        swu(user.weather.used)
+        swt(user.weather.temp)
+        sww(user.weather.weather)
+        ssu(user.spacex.used)
+        ssl(user.spacex.latest)
+        ssn(user.spacex.next)
+        sgu(user.github.used)
+        sgr(user.github.repo)
+    }
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await back.getUser(user.uid)
+                setUserInfos(data.data)
+            } catch (e) {
+                console.log('failure to find user: ' + e.message)
+                try {
+                    const data = await back.newUser(user.uid)
+                    setUserInfos(data.data)
+                } catch (e) {
+                    console.log('failure to create user: ' + e.message)
+                }
+            }
+        })();
+    }, [user])
 
     return (
         <div className={classes.root}>
@@ -176,12 +322,13 @@ const Dashboard = ({user}) => {
                     </IconButton>
                 </div>
                 <Divider />
-                <WidgetSettings/>
-                <Divider />
-                <List><ListItem button key='Profile'>
-                    <ListItemIcon><PersonIcon/></ListItemIcon>
-                    <ListItemText primary={'Profile'} />
-                </ListItem></List>
+                <TreeView
+                    defaultCollapseIcon={<ExpandMoreIcon />}
+                    defaultExpandIcon={<ChevronRightIcon />}>
+                    <WeatherSettings used={wu} twu={twu} wt={wt} twt={twt} ww={ww} tww={tww}/>
+                    <SpaceXSettings used={su} tsu={tsu} sl={sl} tsl={tsl} sn={sn} tsn={tsn}/>
+                    <GithubSettings used={gu} tgu={tgu} gr={gr} tgr={tgr}/>
+                </TreeView>
             </Drawer>
             <main
                 className={clsx(classes.content, {
@@ -189,10 +336,11 @@ const Dashboard = ({user}) => {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <NextLaunch/>
-                <LatestLaunch/>
-                <Temperature location={"Paris"}/>
-                <Weather location={"Paris"}/>
+                {su === true && sl === true ? <LatestLaunch/> : <></>}
+                {su === true && sn === true ? <NextLaunch/> : <></>}
+                {wu === true && wt !== '' ? <Temperature location={wt}/> : <></>}
+                {wu === true && ww !== '' ? <Weather location={ww}/> : <></>}
+                {gu === true && gr !== '' ? <GitHub token={user.credential.accessToken} asked={ww}/> : <></>}
             </main>
         </div>
     );

@@ -2,9 +2,8 @@ import {useState, useEffect} from 'react';
 import {Card, CardContent, Typography} from "@material-ui/core";
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 
-import {getLocalTemperature} from "../../logic/OpenWeather";
+import {getLocalTemperature} from "../../APIs/OpenWeather";
 
-import './widgets.css';
 
 const Temperature = ({location}) => {
     const [temp, setTemp] = useState(0.0)

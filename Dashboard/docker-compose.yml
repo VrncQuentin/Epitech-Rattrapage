@@ -1,8 +1,44 @@
-version: '3'
+version: '3.8'
 services:
   dashboard:
     build: .
-    environment:
-      AKEY_OPENWEATHER: "${AKEY_OPENWEATHER}"
     ports:
-      - 80:3000
+      - 8080:8080
+    networks:
+      - front
+    depends_on:
+      - back
+
+  back:
+    build: back
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      DB_HOST: "db"
+      API_HOST: "0.0.0.0"
+      API_PORT: "3000"
+    networks:
+      - back
+      - front
+
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "postgres"
+    networks:
+      - back
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+volumes:
+  dbdata:
+
+networks:
+  back:
+  front:

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-import {getLatestFlight, getNextFlight} from "../../logic/SpaceX";
+import {getLatestFlight, getNextFlight} from "../../APIs/SpaceX";
 import {Card, CardContent, CardHeader, Typography} from "@material-ui/core";
 
 const FlightInfo = ({name, action}) => {

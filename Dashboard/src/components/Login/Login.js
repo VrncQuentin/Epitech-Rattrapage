@@ -1,58 +1,62 @@
-import {useState} from 'react';
-import {AppBar, Tabs, Tab, Box} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import {useRef, useState} from 'react';
+import {Link,useHistory} from 'react-router-dom';
+import {Form, Card, Button, Alert} from 'react-bootstrap';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
-import "./Login.css"
-import ConnexionForm from "./ConnexionForm";
+import {useAuth} from "../../Auth/context";
 
-import {auth} from '../../logic/firebase';
+export default function Login() {
+    const emailRef = useRef()
+    const passRef = useRef()
+    const {loginWithEmailAndPassword, loginWithGithub} = useAuth()
+    const [loading, setLoading] = useState(false)
+    const [err, setErr] = useState('')
+    const history = useHistory()
 
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div role="tabpanel" hidden={value !== index}
-             id={`simple-tabpanel-${index}`}
-             aria-labelledby={`simple-tab-${index}`}
-            {...other}>
-            {value === index && (<Box p={3}>{children}</Box>)}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
-const Connexion = ({setUser}) => {
-    const [value, setValue] = useState(0);
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            setLoading(true)
+            await loginWithEmailAndPassword(emailRef.current.value, passRef.current.value)
+            history.push('/')
+        } catch (e) {
+            setErr('Failed to log in: ' + e.message)
+        }
+        setLoading(false)
+    }
+    const handleClick = async () => {
+        try {
+            setLoading(true)
+            await loginWithGithub()
+            history.push('/')
+        } catch (e) {
+            setErr('Failed to log in' + e.message)
+        }
+        setLoading(false)
+    }
 
     return (
-        <div className="LoginElems">
-            <AppBar position="static">
-                <Tabs value={value} onChange={(ev, value) => setValue(value)}>
-                    <Tab label="Sign In" {...a11yProps(0)} />
-                    <Tab label="Create Account" {...a11yProps(1)} />
-                </Tabs>
-            </AppBar>
-            <TabPanel value={value} index={0}>
-                <ConnexionForm setUser={setUser} what="sign in" authMethod={auth.signInWithEmailAndPassword}/>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <ConnexionForm setUser={setUser} what="create account" authMethod={auth.createUserWithEmailAndPassword}/>
-            </TabPanel>
-        </div>
-    );
+        <Card>
+            <Card.Body>
+                <h2 className="text-center mb-4">Log in</h2>
+                {err && <Alert variant="danger">{err}</Alert>}
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group id="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" ref={emailRef} required/>
+                    </Form.Group>
+                    <Form.Group id="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" ref={passRef} required/>
+                    </Form.Group>
+                    <Button className="w-100" type="submit" disabled={loading}>Log in</Button>
+                </Form>
+            </Card.Body>
+            <div className="text-center mb-2"><h4>or use</h4></div>
+            <Button className="w-100" onClick={handleClick}><GitHubIcon/></Button>
+            <div className="w-100 text-center mt-2">
+                Don't have an account ? <Link to="/signup">Sign up</Link>
+            </div>
+        </Card>
+    )
 }
-
-export default Connexion;
