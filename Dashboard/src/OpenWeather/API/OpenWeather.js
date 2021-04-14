@@ -1,4 +1,4 @@
-import requester from "./requester";
+import requester from "../../common/requester";
 
 // Using this API: https://openweathermap.org/api
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather"

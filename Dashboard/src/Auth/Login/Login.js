@@ -3,7 +3,7 @@ import {Link,useHistory} from 'react-router-dom';
 import {Form, Card, Button, Alert} from 'react-bootstrap';
 import GitHubIcon from '@material-ui/icons/GitHub';
 
-import {useAuth} from "../../Auth/context";
+import {useAuth} from "../context";
 
 export default function Login() {
     const emailRef = useRef()

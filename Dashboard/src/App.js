@@ -1,13 +1,13 @@
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {Container} from 'react-bootstrap';
 
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./Dashboard/PrivateRoute";
 import {AuthProvider} from "./Auth/context";
 
-import Dashboard from "./components/Dashboard";
-import Login from "./components/Login/Login"
-import Signup from "./components/Login/Signup";
-import About from "./components/About";
+import Dashboard from "./Dashboard/Dashboard";
+import Login from "./Auth/Login/Login"
+import Signup from "./Auth/Login/Signup";
+import About from "./Dashboard/About";
 
 const App = () => {
     return (

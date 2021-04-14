@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getRepo} from "../../APIs/GitHub";
+import {getRepo} from "../API/GitHub";
 import {Card, CardContent, Typography} from "@material-ui/core";
 import {Alert} from "react-bootstrap";
 

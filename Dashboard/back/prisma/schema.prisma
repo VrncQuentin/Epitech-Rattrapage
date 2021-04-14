@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://postgres:password@db:5432/postgres"
+  url      = env("DB_URL")
 }
 
 generator client {
@@ -12,10 +12,9 @@ generator client {
 
 model User {
     id      String      @id
-    weather Weather?
-    spacex  SpaceX?
-    github  Github?
-
+    weather Weather[]
+    spacex  SpaceX[]
+    github  Github[]
 }
 
 model Weather {

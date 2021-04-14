@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-  dashboard:
-    build: .
-    ports:
-      - 8080:8080
-    networks:
-      - front
-    depends_on:
-      - back
+#  dashboard:
+#    build: .
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - front
+#    depends_on:
+#      - back
 
   back:
     build: back
@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: "db"
+      DB_URL: "postgres://postgres:password@db:5432/postgres"
       API_HOST: "0.0.0.0"
       API_PORT: "3000"
     networks:
