@@ -1,8 +1,10 @@
-import {useState} from 'react';
-import {Alert} from "react-bootstrap";
+import {useRef, useState} from 'react';
+import {Alert, Button, Card, Form} from "react-bootstrap";
 
-import {getLocalTemperature} from "./API/OpenWeather";
+import {getLocalTemperature} from "./api";
 import {Widget} from '../Dashboard/Widget';
+import {useAuth} from "../Auth/context";
+import {updateUser} from "../API/back";
 
 const Temperature = ({location, timer}) => {
     const [err, setErr] = useState('')
@@ -27,3 +29,34 @@ const Temperature = ({location, timer}) => {
     )
 }
 export default Temperature;
+
+export const CreateTemperature = () => {
+    const city = useRef()
+    const timer = useRef()
+    const {user} = useAuth()
+    const handleSubmit = async () => {
+        try {
+            //TODO: complete
+            await updateUser(user.uid, {weather: {set: []}})
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    return (
+        <Card>
+            <Card.Header>Weather in city</Card.Header>
+            <Card.Body>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group id ='ct-city'>
+                        <Form.Control ref={city} placeholder='City' required/>
+                    </Form.Group>
+                    <Form.Group id ='ct-timer'>
+                        <Form.Control ref={timer} placeholder='Timer in minutes' required/>
+                    </Form.Group>
+                    <Button type='submit'>Create</Button>
+                </Form>
+            </Card.Body>
+        </Card>
+    )
+}

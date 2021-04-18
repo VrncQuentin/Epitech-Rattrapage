@@ -18,6 +18,7 @@ export const AuthProvider = ({children}) => {
     const loginWithEmailAndPassword = (email, password) => auth.signInWithEmailAndPassword(email, password)
     const signupWithGithub = () => auth.signInWithPopup(github)
     const loginWithGithub = () => auth.signInWithPopup(github)
+    const logout = () => auth.signOut()
 
     return (
         <AuthContext.Provider value={{
@@ -25,7 +26,8 @@ export const AuthProvider = ({children}) => {
             signupWithEmailAndPassword,
             loginWithEmailAndPassword,
             signupWithGithub,
-            loginWithGithub
+            loginWithGithub,
+            logout
         }}>
             {!loading && children}
         </AuthContext.Provider>

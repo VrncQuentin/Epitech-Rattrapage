@@ -1,8 +1,8 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 
-import {getLocalWeather} from "./API/OpenWeather";
+import {getLocalWeather} from "./api";
 import {Widget} from '../Dashboard/Widget';
-import {Alert} from "react-bootstrap";
+import {Alert, Button, Card, Form} from "react-bootstrap";
 
 const Weather = ({location, timer}) => {
     const [err, setErr] = useState('')
@@ -29,5 +29,27 @@ const Weather = ({location, timer}) => {
         </Widget>
     )
 };
-
 export default Weather;
+
+export const CreateWeather = ({updateUser}) => {
+    const city = useRef()
+    const timer = useRef()
+    const handleSubmit = () => {}
+
+    return (
+        <Card>
+            <Card.Header>Weather in city</Card.Header>
+            <Card.Body>
+                <Form>
+                    <Form.Group id ='cw-city'>
+                        <Form.Control ref={city} placeholder='City' required/>
+                    </Form.Group>
+                    <Form.Group id ='cw-timer'>
+                        <Form.Control ref={timer} placeholder='Timer in minutes' required/>
+                    </Form.Group>
+                    <Button type='submit'>Create</Button>
+                </Form>
+            </Card.Body>
+        </Card>
+    )
+}

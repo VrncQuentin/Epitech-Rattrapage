@@ -4,8 +4,7 @@ import GuestRoute from "./Dashboard/GuestRoute";
 import PrivateRoute from "./Dashboard/PrivateRoute";
 import {AuthProvider} from "./Auth/context";
 
-import Dashboard from "./Dashboard/D";
-import './Dashboard/Sidebar.css';
+import Dashboard from "./Dashboard/Dashboard";
 
 import Login from "./Auth/Login/Login"
 import Signup from "./Auth/Login/Signup";
