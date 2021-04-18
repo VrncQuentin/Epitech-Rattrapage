@@ -12,33 +12,26 @@ generator client {
 
 model User {
     id      String      @id
-    weather Weather[]
-    spacex  SpaceX[]
+    accessToken string
+    weatherUsed bool    @default(false)
+    weather WeatherWidgets[]
+    githubUsed bool    @default(false)
     github  Github[]
 }
 
-model Weather {
+model WeatherWidget {
     id      String      @id @default(uuid())
-    used    Boolean     @default(false)
-    temp    String      @default("")
-    weather String      @default("")
+    param   String      @default("")
+    timer   int         @required
+    weather bool        @required // If false widget is temperature, if true it's weather
     user    User        @relation(fields: [userId], references: [id])
     userId  String
 }
 
-model SpaceX {
-    id      String      @id @default(uuid())
-    used    Boolean     @default(false)
-    latest  Boolean     @default(false)
-    next    Boolean     @default(false)
-    user    User        @relation(fields: [userId], references: [id])
-    userId  String
-    }
-
 model Github {
     id      String      @id @default(uuid())
-    used    Boolean     @default(false)
     repo    String      @default("")
+    timer   int         @required
     user    User        @relation(fields: [userId], references: [id])
     userId  String
 }

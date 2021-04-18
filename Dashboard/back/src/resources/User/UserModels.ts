@@ -1,8 +1,5 @@
 import { User } from '@prisma/client';
-
 import db from '../../serverDatabase';
-import UpdateDTO from './UserDTO';
-
 
 export async function getUser(id: string): Promise<User | null> {
 	return db.user.findUnique({
@@ -10,30 +7,32 @@ export async function getUser(id: string): Promise<User | null> {
 			id,
 		},
 		include: {
+			accessToken: true,
+			weatherUsed: true,
 			weather: true,
-			github: true,
-			spacex: true,
+			githubUsed: true,
+			github: true
 		},
 	});
 }
 
-export async function createUser(id: string): Promise<User> {
+export async function createUser(id: string, token: string): Promise<User> {
 	return await db.user.create({
 		data: {
 			id: id,
+			accessToken: token,
 			weather: {
 				create: {}
-			},
-			spacex: {
-				create: {},
 			},
 			github: {
 				create: {}
 			}
 		},
 		include: {
+			accessToken: true,
+			weatherUsed: true,
 			weather: true,
-			spacex: true,
+			githubUsed: true,
 			github: true
 		}
 	})
@@ -46,5 +45,12 @@ export async function updateUser(id: string, value: any): Promise<User | null> {
 			id,
 		},
 		data: value,
+		include: {
+			accessToken: true,
+			weatherUsed: true,
+			weather: true,
+			githubUsed: true,
+			github: true
+		}
 	});
 }
