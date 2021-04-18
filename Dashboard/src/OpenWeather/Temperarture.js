@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {Alert} from "react-bootstrap";
 
-import {getLocalTemperature} from "../API/OpenWeather";
-import {Widget} from '../../Dashboard/Widget';
+import {getLocalTemperature} from "./API/OpenWeather";
+import {Widget} from '../Dashboard/Widget';
 
 const Temperature = ({location, timer}) => {
     const [err, setErr] = useState('')

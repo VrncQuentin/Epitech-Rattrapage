@@ -1,7 +1,7 @@
 import {useState} from "react";
 
-import {getLocalWeather} from "../API/OpenWeather";
-import {Widget} from '../../Dashboard/Widget';
+import {getLocalWeather} from "./API/OpenWeather";
+import {Widget} from '../Dashboard/Widget';
 import {Alert} from "react-bootstrap";
 
 const Weather = ({location, timer}) => {
