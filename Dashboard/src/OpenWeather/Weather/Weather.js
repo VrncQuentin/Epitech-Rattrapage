@@ -1,36 +1,31 @@
-import {useEffect, useState} from "react";
-import {Typography} from '@material-ui/core';
-import {Modal} from 'react-bootstrap';
+import {useState} from "react";
 
 import {getLocalWeather} from "../API/OpenWeather";
-import {Widget} from '../../common/Widget';
+import {Widget} from '../../Dashboard/Widget';
+import {Alert} from "react-bootstrap";
 
-const Weather = ({location}) => {
+const Weather = ({location, timer}) => {
+    const [err, setErr] = useState('')
     const [weather, setWeather] = useState(null)
-
-    useEffect(() => {
-        (async () => {
+    const update = async () => {
+        try {
             const data = await getLocalWeather(location);
-            setWeather(data);
-    })();}, [location])
+            setWeather(data)
+        } catch (e) {
+            setErr("couldn't fetch weather: " + e.message)
+        }
+    }
 
-    const config = (
-        <Modal.Body>
-            hello world
-        </Modal.Body>
-    )
-
-    // return (
-    //     <Card className='weather'><CardContent>
-    //         <Typography variant="h5">OpenWeather in {location}</Typography>
-    //         <Typography>{weather === null ? "" : weather.weather}</Typography>
-    //         <Typography>{weather === null ? "" : weather.desc}</Typography>
-    //     </CardContent></Card>
-    // )
     return (
-        <Widget name={'OpenWeather in ' + location} configModal={config}>
-            <Typography>{weather === null ? "" : weather.weather}</Typography>
-            <Typography>{weather === null ? "" : weather.desc}</Typography>
+        <Widget name={'Weather in ' + location}
+                updateWidget={update}
+                timer={timer}
+        >
+            {
+                (err && <Alert variant='danger'>{err}</Alert>)
+                || (weather === null ? "" : weather.weather + '\n')
+                + (weather === null ? "" : weather.desc)
+            }
         </Widget>
     )
 };
