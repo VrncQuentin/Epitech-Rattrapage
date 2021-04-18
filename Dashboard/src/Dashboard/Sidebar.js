@@ -4,6 +4,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {CreateWeather} from "../OpenWeather/Weather";
 import {CreateTemperature} from "../OpenWeather/Temperarture";
 import './Dashboard.css'
+import {useAuth} from "../Auth/context";
 
 const Service = ({name, used, toggleUsed, children}) => {
     return (
@@ -17,9 +18,10 @@ const Service = ({name, used, toggleUsed, children}) => {
     )
 }
 
-const Sidebar = (disconnect) => {
+const Sidebar = () => {
     const [used, setUsed] = useState(false)
     const [used2, setUsed2] = useState(false)
+    const {logout} = useAuth()
 
     return (
         <>
@@ -34,7 +36,7 @@ const Sidebar = (disconnect) => {
                     <CreateTemperature/>
                 </Service>
                 <br/>
-                <Button className='align-content-center' onClick={disconnect}>Logout</Button>
+                <Button className='align-content-center' onClick={logout}>Logout</Button>
             </Nav>
         </>
     );
