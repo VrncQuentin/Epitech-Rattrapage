@@ -36,26 +36,29 @@ export default function Login() {
     }
 
     return (
-        <Card>
-            <Card.Body>
-                <h2 className="text-center mb-4">Log in</h2>
-                {err && <Alert variant="danger">{err}</Alert>}
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group id="email">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" ref={emailRef} required/>
-                    </Form.Group>
-                    <Form.Group id="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" ref={passRef} required/>
-                    </Form.Group>
-                    <Button className="w-100" type="submit" disabled={loading}>Log in</Button>
-                </Form>
-            </Card.Body>
-            <div className="text-center mb-2"><h4>or use</h4></div>
-            <Button className="w-100" onClick={handleClick}><GitHubIcon/></Button>
-            <div className="w-100 text-center mt-2">
-                Don't have an account ? <Link to="/signup">Sign up</Link>
+        <Card className="d-flex align-items-center justify-content-center"
+              style={{minHeight: "100vh"}}>
+            <div className='w-100' style={{maxWidth: '400px'}}>
+                <Card.Body>
+                    <h2 className="text-center mb-4">Log in</h2>
+                    {err && <Alert variant="danger">{err}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group id="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" ref={emailRef} required/>
+                        </Form.Group>
+                        <Form.Group id="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" ref={passRef} required/>
+                        </Form.Group>
+                        <Button className="w-100" type="submit" disabled={loading}>Log in</Button>
+                    </Form>
+                </Card.Body>
+                <div className="text-center mb-2"><h4>or use</h4></div>
+                <Button className="w-100" onClick={handleClick}><GitHubIcon/></Button>
+                <div className="w-100 text-center mt-2">
+                    Don't have an account ? <Link to="/signup">Sign up</Link>
+                </div>
             </div>
         </Card>
     )

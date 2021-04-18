@@ -42,30 +42,33 @@ export default function Signup() {
     }
 
     return (
-        <Card>
-            <Card.Body>
-                <h2 className="text-center mb-4">Sign up</h2>
-                {err && <Alert variant="danger">{err}</Alert>}
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group id="email">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" ref={emailRef} required/>
-                    </Form.Group>
-                    <Form.Group id="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" ref={passRef} required/>
-                    </Form.Group>
-                    <Form.Group id="password-confirmation">
-                        <Form.Label>Password Confirmation</Form.Label>
-                        <Form.Control type="password" ref={passConfRef} required/>
-                    </Form.Group>
-                    <Button className="w-100" type="submit" disabled={loading}>Sign up</Button>
-                </Form>
-            </Card.Body>
-            <div className="text-center mb-2"><h4>or use</h4></div>
-            <Button className="w-100" onClick={handleClick}><GitHubIcon/></Button>
-            <div className="w-100 text-center mt-2">
-                Already have an account ? <Link to="/login">Log in</Link>
+        <Card className="align-items-center justify-content-center"
+              style={{minHeight: "100vh"}}>
+            <div className='w-100' style={{maxWidth: '400px'}}>
+                <Card.Body>
+                    <h2 className="text-center mb-4">Sign up</h2>
+                    {err && <Alert variant="danger">{err}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group id="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" ref={emailRef} required/>
+                        </Form.Group>
+                        <Form.Group id="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" ref={passRef} required/>
+                        </Form.Group>
+                        <Form.Group id="password-confirmation">
+                            <Form.Label>Password Confirmation</Form.Label>
+                            <Form.Control type="password" ref={passConfRef} required/>
+                        </Form.Group>
+                        <Button className="w-100" type="submit" disabled={loading}>Sign up</Button>
+                    </Form>
+                </Card.Body>
+                <div className="text-center mb-2"><h4>or use</h4></div>
+                <Button className="w-100" onClick={handleClick}><GitHubIcon/></Button>
+                <div className="w-100 text-center mt-2">
+                    Already have an account ? <Link to="/login">Log in</Link>
+                </div>
             </div>
         </Card>
     )
