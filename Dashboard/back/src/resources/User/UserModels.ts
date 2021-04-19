@@ -7,10 +7,7 @@ export async function getUser(id: string): Promise<User | null> {
 			id,
 		},
 		include: {
-			accessToken: true,
-			weatherUsed: true,
 			weather: true,
-			githubUsed: true,
 			github: true
 		},
 	});
@@ -21,18 +18,11 @@ export async function createUser(id: string, token: string): Promise<User> {
 		data: {
 			id: id,
 			accessToken: token,
-			weather: {
-				create: {}
-			},
-			github: {
-				create: {}
-			}
+			weather: {},
+			github: {}
 		},
 		include: {
-			accessToken: true,
-			weatherUsed: true,
 			weather: true,
-			githubUsed: true,
 			github: true
 		}
 	})
@@ -46,10 +36,7 @@ export async function updateUser(id: string, value: any): Promise<User | null> {
 		},
 		data: value,
 		include: {
-			accessToken: true,
-			weatherUsed: true,
 			weather: true,
-			githubUsed: true,
 			github: true
 		}
 	});

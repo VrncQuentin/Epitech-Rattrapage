@@ -12,26 +12,31 @@ generator client {
 
 model User {
     id      String      @id
-    accessToken string
-    weatherUsed bool    @default(false)
-    weather WeatherWidgets[]
-    githubUsed bool    @default(false)
-    github  Github[]
+    accessToken String
+    weatherUsed Boolean    @default(false)
+    weather WeatherWidget[]
+    githubUsed Boolean    @default(false)
+    github  GithubWidget[]
+}
+
+enum WWType {
+ WEATHER
+ TEMPERATURE
 }
 
 model WeatherWidget {
     id      String      @id @default(uuid())
     param   String      @default("")
-    timer   int         @required
-    weather bool        @required // If false widget is temperature, if true it's weather
+    timer   Int
+    weather WWType
     user    User        @relation(fields: [userId], references: [id])
     userId  String
 }
 
-model Github {
+model GithubWidget {
     id      String      @id @default(uuid())
     repo    String      @default("")
-    timer   int         @required
+    timer   Int
     user    User        @relation(fields: [userId], references: [id])
     userId  String
 }
