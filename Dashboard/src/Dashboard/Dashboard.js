@@ -1,40 +1,23 @@
-import {useEffect, useState} from "react";
-import {Col, Container, Row} from "react-bootstrap";
+import {Alert, Col, Container, Row} from "react-bootstrap";
 import Sidebar from "./Sidebar";
-import * as back from "../API/back";
-import {useAuth} from "../Auth/context";
-
+import {useDbUser} from "./Context";
 
 const Dashboard = () => {
-    const [dbUser, setDBUser] = useState();
-    const {user} = useAuth()
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const data = await back.getUser(user.uid)
-                setDBUser(data.data)
-            } catch (e) {
-                console.log('failure to find user: ' + e.message)
-                try {
-                    const data = await back.newUser(user.uid)
-                    setDBUser(data.data)
-                } catch (e) {
-                    console.log('failure to create user: ' + e.message)
-                }
-            }
-        })()
-    }, [user.uid, setDBUser])
-
+    const {dbUser, dbUserErr} = useDbUser()
     return (
-        <Container fluid>
-            <Row>
-                <Col xs={2} id="sidebar-wrapper">
-                    <Sidebar/>
-                </Col>
-                <Col  xs={10} id="page-content-wrapper">
-                    {dbUser === null ? 'hello world' : user}
-                </Col>
+        <Container fluid><Row>
+            <Col xs={2} id="sidebar-wrapper">
+                <Sidebar/>
+            </Col>
+            <Col  xs={10} id="page-content-wrapper">
+                <Row className='bg-primary justify-content-center'>
+                    <h1 className=''>Dashboard</h1><br/>
+                </Row>
+                <Row className='justify-content-center'>
+                    {(dbUserErr && <Alert variant='danger'>{dbUserErr}</Alert>)
+                    || JSON.stringify(dbUser)}
+                </Row>
+            </Col>
         </Row></Container>
     );
 };
