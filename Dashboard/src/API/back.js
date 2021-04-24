@@ -2,9 +2,9 @@ import requester from "./requester";
 
 const baseUrl = "http://0.0.0.0:3000/user/"
 
-export const newUser = (user) => {
+export const newUser = (user, accessToken) => {
     return new Promise(((resolve, reject) => {
-        requester.post(baseUrl + user)
+        requester.post(baseUrl + user + '/' + accessToken)
             .then(res => {
                 resolve(res)
             })
