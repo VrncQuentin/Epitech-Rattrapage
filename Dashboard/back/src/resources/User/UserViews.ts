@@ -11,7 +11,11 @@ router.get(
 	'/:id',
 	handler(async (req, res) => {
 		const user = await controllers.getUser(req.params.id);
-		res.send(user);
+		if (user === null) {
+			res.sendStatus(404)
+		} else {
+			res.send(user);
+		}
 	}),
 );
 
