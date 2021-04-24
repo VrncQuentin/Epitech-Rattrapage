@@ -18,18 +18,17 @@ export const DbUserProvider = ({children}) => {
                 setErr('')
                 setDbUser(data.data)
             } catch (e) {
-                setErr('failure to find user: ' + e.message)
                 try {
-                    const data = await back.newUser(user.uid)
+                    const data = await back.newUser(user.uid, user.l)
                     setErr('')
                     setDbUser(data.data)
                 } catch (e) {
-                    setErr('failure to create user: ' + e.message)
+                    setErr('failure to load user: ' + e.message)
                 }
             }
             setLoading(false)
         })()
-    }, [user.uid, setDbUser])
+    }, [user.uid, user.l, setDbUser, setErr])
 
     return (
         <DbUserContext.Provider value={{
@@ -39,5 +38,5 @@ export const DbUserProvider = ({children}) => {
         }}>
             {!loading && children}
         </DbUserContext.Provider>
-            )
+    )
 }
