@@ -6,43 +6,12 @@ import * as controllers from './WidgetControllers';
 
 const router = Router();
 
-// Get user based on its id
-router.get(
-	'/:id',
-	handler(async (req, res) => {
-		const user = await controllers.getUser(req.params.id);
-		if (user === null) {
-			res.sendStatus(404)
-		} else {
-			res.send(user);
-		}
-	}),
-);
-
-// Create a user based on its firebase id
+// Create a weather widget & connect it to its user
 router.post(
-	'/create/:id/:token',
+	'/weather/:id',
 	handler(async (req, res) => {
-		const user = await controllers.createUser(req.params.id, req.params.token);
+		const user = await controllers.createWeatherWidget(req.params.id, req.body);
 		res.status(httpStatus.CREATED).send(user);
-	}),
-);
-
-// Update a user based on its id
-router.post(
-	'/update/:id',
-	handler(async (req, res) => {
-		const user = await controllers.updateUser(req.params.id, req.body);
-		res.send(user);
-	}),
-);
-
-// Create a widget and connect it to a user
-router.post(
-	'/widget/:id',
-	handler(async (req, res) => {
-		const user = await controllers.updateUser(req.params.id, req.body);
-		res.send(user);
 	}),
 );
 

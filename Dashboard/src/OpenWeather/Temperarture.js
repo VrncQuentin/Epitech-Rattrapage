@@ -3,8 +3,8 @@ import {Alert, Button, Card, Form} from "react-bootstrap";
 
 import {getLocalTemperature} from "./api";
 import {Widget} from '../Dashboard/Widget';
-import {useAuth} from "../Auth/context";
-import {updateUser} from "../API/back";
+import {newWeatherWidget} from "../API/back";
+import {useDbUser} from "../Dashboard/Context";
 
 const Temperature = ({location, timer}) => {
     const [err, setErr] = useState('')
@@ -33,11 +33,15 @@ export default Temperature;
 export const CreateTemperature = () => {
     const city = useRef()
     const timer = useRef()
-    const {user} = useAuth()
-    const handleSubmit = async () => {
+    const {dbUser} = useDbUser()
+    const handleSubmit = async (ev) => {
+        ev.preventDefault()
         try {
-            //TODO: complete
-            await updateUser(user.uid, {weather: {set: []}})
+            await newWeatherWidget(dbUser.id, {
+                param: city.current.value,
+                timer: timer.current.value * 1000 * 60,
+                weather: false,
+            })
         } catch (e) {
             console.error(e)
         }
@@ -45,7 +49,7 @@ export const CreateTemperature = () => {
 
     return (
         <Card>
-            <Card.Header>Weather in city</Card.Header>
+            <Card.Header>Temperature in city</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group id ='ct-city'>

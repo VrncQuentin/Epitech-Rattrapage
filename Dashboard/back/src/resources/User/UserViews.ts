@@ -21,7 +21,7 @@ router.get(
 
 // Create a user based on its firebase id
 router.post(
-	'/:id/:token',
+	'/create/:id/:token',
 	handler(async (req, res) => {
 		const user = await controllers.createUser(req.params.id, req.params.token);
 		res.status(httpStatus.CREATED).send(user);
@@ -31,6 +31,15 @@ router.post(
 // Update a user based on its id
 router.post(
 	'/update/:id',
+	handler(async (req, res) => {
+		const user = await controllers.updateUser(req.params.id, req.body);
+		res.send(user);
+	}),
+);
+
+// Create a widget and connect it to a user
+router.post(
+	'/widget/:id',
 	handler(async (req, res) => {
 		const user = await controllers.updateUser(req.params.id, req.body);
 		res.send(user);
