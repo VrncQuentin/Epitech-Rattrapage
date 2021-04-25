@@ -1,6 +1,16 @@
 import {Alert, Col, Container, Row} from "react-bootstrap";
 import Sidebar from "./Sidebar";
 import {useDbUser} from "./Context";
+import Weather from "../OpenWeather/Weather";
+import Temperature from "../OpenWeather/Temperarture";
+
+const dispatchWeatherWidgets = (e) => {
+    if (e.weather) {
+        return <Weather location={e.param} timer={e.timer}/>
+    } else {
+        return <Temperature location={e.param} timer={e.timer}/>
+    }
+}
 
 const Dashboard = () => {
     const {dbUser, dbUserErr} = useDbUser()
@@ -15,7 +25,7 @@ const Dashboard = () => {
                 </Row>
                 <Row className='justify-content-center'>
                     {(dbUserErr && <Alert variant='danger'>{dbUserErr}</Alert>)
-                    || JSON.stringify(dbUser)}
+                    || dbUser.weather.map(dispatchWeatherWidgets)}
                 </Row>
             </Col>
         </Row></Container>
