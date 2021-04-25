@@ -5,6 +5,8 @@ import {CreateWeather} from "../OpenWeather/Weather";
 import {CreateTemperature} from "../OpenWeather/Temperarture";
 import './Dashboard.css'
 import {useAuth} from "../Auth/context";
+import {useDbUser} from "./Context";
+import * as back from "../API/back";
 
 const Service = ({name, used, toggleUsed, children}) => {
     return (
@@ -19,19 +21,37 @@ const Service = ({name, used, toggleUsed, children}) => {
 }
 
 const Sidebar = () => {
-    const [used, setUsed] = useState(false)
-    const [used2, setUsed2] = useState(false)
     const {logout} = useAuth()
+    const {dbUser} = useDbUser()
+    const toggle = (value, setter) => {
+        (async () => {
+            try {
+                await back.updateUser(dbUser.id, value)
+            } catch (e) {
+                console.log(e)
+            }
+        })();
+        setter();
+    }
+
+    const [weatherUsed, setWeatherUsed] = useState(dbUser.weatherUsed)
+    const [githubUsed, setGithubUsed] = useState(dbUser.githubUsed)
 
     return (
         <>
             <Nav className="col-md-12 d-none d-md-block bg-light sidebar text-center">
                 <h5>Services & Widgets</h5>
-                <Service name='OpenWeather' used={used} toggleUsed={() => setUsed(!used)}>
+                <Service name='OpenWeather' used={weatherUsed} toggleUsed={() => toggle(
+                    {weatherUsed: !weatherUsed},
+                    () => setWeatherUsed(!weatherUsed))}
+                >
                     <CreateWeather/>
                     <CreateTemperature/>
                 </Service>
-                <Service name='OpenWeather' used={used2} toggleUsed={() => setUsed2(!used2)}>
+                <Service name='Github' used={githubUsed} toggleUsed={() => toggle(
+                    {githubUsed: !githubUsed},
+                    () => setGithubUsed(!githubUsed)
+                )}>
                     <CreateWeather/>
                     <CreateTemperature/>
                 </Service>
