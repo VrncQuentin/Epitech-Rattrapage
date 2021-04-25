@@ -33,8 +33,7 @@ export const DbUserProvider = ({children}) => {
     return (
         <DbUserContext.Provider value={{
             dbUser,
-            setDbUser,
-            dbUserErr: err
+            dbUserErr: err,
         }}>
             {!loading && children}
         </DbUserContext.Provider>
