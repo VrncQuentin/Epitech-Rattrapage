@@ -14,19 +14,6 @@ export const newUser = (user, accessToken) => {
     })
 }
 
-export const newWeatherWidget = (userId, widget) => {
-    return new Promise((resolve, reject) => {
-        requester.post(widgetUrl + 'weather/' + userId, {
-            ...widget,
-            user: {
-                connect: {id: userId}
-            }
-        })
-            .then(res => resolve(res))
-            .catch(e => reject(e))
-    })
-}
-
 export const getUser = (user) => {
     return new Promise((resolve, reject) => {
         requester.get(userUrl + user)
@@ -43,6 +30,27 @@ export const updateUser = (user, value) => {
             .then(res => {
                 resolve(res)
             })
+            .catch(e => reject(e))
+    })
+}
+
+export const newWeatherWidget = (userId, widget) => {
+    return new Promise((resolve, reject) => {
+        requester.post(widgetUrl + 'weather/' + userId, {
+            ...widget,
+            user: {
+                connect: {id: userId}
+            }
+        })
+            .then(res => resolve(res))
+            .catch(e => reject(e))
+    })
+}
+
+export const deleteWeatherWidget = (id) => {
+    return new Promise((resolve, reject) => {
+        requester.delete(widgetUrl + 'weather/' + id)
+            .then(res => resolve(res))
             .catch(e => reject(e))
     })
 }
