@@ -24,7 +24,7 @@ export const CreateWeatherWidget = ({weather}) => {
             <Card.Header>{weather ? 'Weather' : 'Temperature'} in city</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group id ='cw-city'>
+                    <Form.Group id ='cw-param'>
                         <Form.Control ref={city} placeholder='City' required/>
                     </Form.Group>
                     <Form.Group id ='cw-timer'>
@@ -35,5 +35,7 @@ export const CreateWeatherWidget = ({weather}) => {
             </Card.Body>
         </Card>
     )
-
 }
+
+export const CreateWeather = () => (<CreateWeatherWidget weather={true}/>)
+export const CreateTemperature = () => (<CreateWeatherWidget weather={false}/>)
