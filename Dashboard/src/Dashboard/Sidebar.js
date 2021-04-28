@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import {Button, Card, Container, Nav, Row} from "react-bootstrap";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import {CreateWeather} from "../OpenWeather/Weather";
-import {CreateTemperature} from "../OpenWeather/Temperarture";
 import './Dashboard.css'
 import {useAuth} from "../Auth/context";
 import {useDbUser} from "./Context";
 import * as back from "../API/back";
-import {CreateWeatherWidget} from "../OpenWeather/Create";
+import {CreateTemperature, CreateWeather, CreateWeatherWidget} from "../OpenWeather/Create";
+import {CreateRocketInfo, CreateSpaceXInfo} from "../SpaceX/Create";
 
 const Service = ({name, used, toggleUsed, children}) => {
     return (
@@ -37,6 +36,7 @@ const Sidebar = () => {
 
     const [weatherUsed, setWeatherUsed] = useState(dbUser.weatherUsed)
     const [githubUsed, setGithubUsed] = useState(dbUser.githubUsed)
+    const [spacexUsed, setSpacexUsed] = useState(dbUser.spacexUsed)
 
     return (
         <>
@@ -46,13 +46,20 @@ const Sidebar = () => {
                     {weatherUsed: !weatherUsed},
                     () => setWeatherUsed(!weatherUsed))}
                 >
-                    <CreateWeatherWidget weather={true}/>
-                    <CreateWeatherWidget weather={false}/>
+                    <CreateWeather/>
+                    <CreateTemperature/>
                 </Service>
                 <Service name='Github' used={githubUsed} toggleUsed={() => toggle(
                     {githubUsed: !githubUsed},
                     () => setGithubUsed(!githubUsed)
                 )}>
+                </Service>
+                <Service name='SpaceX' used={spacexUsed} toggleUsed={() => toggle(
+                    {spacexUsed: !spacexUsed},
+                    () => setSpacexUsed(!spacexUsed)
+                )}>
+                    <CreateSpaceXInfo/>
+                    <CreateRocketInfo/>
                 </Service>
                 <br/>
                 <Button className='align-content-center' onClick={logout}>Logout</Button>
