@@ -10,8 +10,15 @@ const router = Router();
 router.post(
 	'/weather/:id',
 	handler(async (req, res) => {
-		const user = await controllers.createWeatherWidget(req.params.id, req.body);
-		res.status(httpStatus.CREATED).send(user);
+		const weather = await controllers.createWeatherWidget(req.params.id, req.body);
+		res.status(httpStatus.CREATED).send(weather);
+	}),
+);
+router.delete(
+	'/weather/:id',
+	handler(async (req, res) => {
+		const weather = await controllers.deleteWeatherWidget(req.params.id);
+		res.status(200).send(weather);
 	}),
 );
 
