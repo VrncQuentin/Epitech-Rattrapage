@@ -7,6 +7,7 @@ import './Dashboard.css'
 import {useAuth} from "../Auth/context";
 import {useDbUser} from "./Context";
 import * as back from "../API/back";
+import {CreateWeatherWidget} from "../OpenWeather/Create";
 
 const Service = ({name, used, toggleUsed, children}) => {
     return (
@@ -45,15 +46,13 @@ const Sidebar = () => {
                     {weatherUsed: !weatherUsed},
                     () => setWeatherUsed(!weatherUsed))}
                 >
-                    <CreateWeather/>
-                    <CreateTemperature/>
+                    <CreateWeatherWidget weather={true}/>
+                    <CreateWeatherWidget weather={false}/>
                 </Service>
                 <Service name='Github' used={githubUsed} toggleUsed={() => toggle(
                     {githubUsed: !githubUsed},
                     () => setGithubUsed(!githubUsed)
                 )}>
-                    <CreateWeather/>
-                    <CreateTemperature/>
                 </Service>
                 <br/>
                 <Button className='align-content-center' onClick={logout}>Logout</Button>
