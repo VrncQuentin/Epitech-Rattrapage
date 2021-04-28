@@ -1,12 +1,13 @@
-import {useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
 import {getLocalWeather} from "./api";
 import {Widget} from '../Dashboard/Widget';
-import {Alert, Button, Card, Form} from "react-bootstrap";
+import {Alert, } from "react-bootstrap";
+import {deleteWeatherWidget} from "../API/back";
 
-const Weather = ({location, timer}) => {
+const Weather = ({location, timer, id}) => {
     const [err, setErr] = useState('')
-    const [weather, setWeather] = useState(null)
+    const [weather, setWeather] = useState()
     const update = async () => {
         try {
             const data = await getLocalWeather(location);
@@ -16,10 +17,18 @@ const Weather = ({location, timer}) => {
         }
     }
 
+    useEffect(() => {
+        (async () => update())()
+    }, [])
+
     return (
         <Widget name={'Weather in ' + location}
                 updateWidget={update}
                 timer={timer}
+                deleteWidget={async () => {
+                    await deleteWeatherWidget(id)
+                    window.location.reload()
+                }}
         >
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
@@ -30,26 +39,3 @@ const Weather = ({location, timer}) => {
     )
 };
 export default Weather;
-
-export const CreateWeather = ({updateUser}) => {
-    const city = useRef()
-    const timer = useRef()
-    const handleSubmit = () => {}
-
-    return (
-        <Card>
-            <Card.Header>Weather in city</Card.Header>
-            <Card.Body>
-                <Form>
-                    <Form.Group id ='cw-city'>
-                        <Form.Control ref={city} placeholder='City' required/>
-                    </Form.Group>
-                    <Form.Group id ='cw-timer'>
-                        <Form.Control ref={timer} placeholder='Timer in minutes' required/>
-                    </Form.Group>
-                    <Button type='submit'>Create</Button>
-                </Form>
-            </Card.Body>
-        </Card>
-    )
-}
