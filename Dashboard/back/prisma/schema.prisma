@@ -11,12 +11,14 @@ generator client {
 }
 
 model User {
-    id      String      @id
+    id          String          @id
     accessToken String
-    weatherUsed Boolean    @default(false)
-    weather WeatherWidget[]
-    githubUsed Boolean    @default(false)
-    github  GithubWidget[]
+    weatherUsed Boolean         @default(false)
+    githubUsed  Boolean         @default(false)
+    spacexUsed  Boolean         @default(false)
+    weather     WeatherWidget[]
+    github      GithubWidget[]
+    spacex      SpaceXWidget[]
 }
 
 model WeatherWidget {
@@ -32,6 +34,15 @@ model GithubWidget {
     id      String      @id @default(uuid())
     repo    String      @default("")
     timer   Int
+    user    User        @relation(fields: [userId], references: [id])
+    userId  String
+}
+
+model SpaceXWidget {
+    id String @id @default(uuid())
+    rocketId Int?
+    desiredInfo String?
+    timer Int
     user    User        @relation(fields: [userId], references: [id])
     userId  String
 }
