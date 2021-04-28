@@ -6,9 +6,9 @@ import Temperature from "../OpenWeather/Temperarture";
 
 const dispatchWeatherWidgets = (e) => {
     if (e.weather) {
-        return <Weather location={e.param} timer={e.timer}/>
+        return <Weather location={e.param} timer={e.timer} id={e.id}/>
     } else {
-        return <Temperature location={e.param} timer={e.timer}/>
+        return <Temperature location={e.param} timer={e.timer} id={e.id}/>
     }
 }
 
