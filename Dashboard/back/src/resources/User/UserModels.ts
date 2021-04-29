@@ -8,7 +8,8 @@ export async function getUser(id: string): Promise<User | null> {
 		},
 		include: {
 			weather: true,
-			github: true
+			github: true,
+			spacex: true
 		},
 	});
 }
@@ -19,11 +20,13 @@ export async function createUser(id: string, token: string): Promise<User> {
 			id: id,
 			accessToken: token,
 			weather: {},
-			github: {}
+			github: {},
+			spacex: {}
 		},
 		include: {
 			weather: true,
-			github: true
+			github: true,
+			spacex: true
 		}
 	})
 }
@@ -37,7 +40,8 @@ export async function updateUser(id: string, value: any): Promise<User | null> {
 		data: value,
 		include: {
 			weather: true,
-			github: true
+			github: true,
+			spacex: true
 		}
 	});
 }
