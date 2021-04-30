@@ -52,18 +52,7 @@ const Sidebar = () => {
                 </Service>
                 <Service name='Github' used={githubUsed} toggleUsed={() => toggle(
                     {githubUsed: !githubUsed},
-                    async () => {
-                        if (dbUser.accessToken === 'NOT') {
-                            try {
-                                await loginWithGithub()
-                                setGithubUsed(!githubUsed)
-                            } catch (e) {
-                                alert(e.message)
-                            }
-                        } else {
-                            setGithubUsed(!githubUsed)
-                        }
-                    }
+                    () => setGithubUsed(!githubUsed)
                 )}>
                     <CreateGithubWidget/>
                 </Service>
