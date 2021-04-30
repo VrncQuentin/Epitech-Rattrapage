@@ -1,16 +1,22 @@
 import {useRef} from "react";
 import {useDbUser} from "../Dashboard/Context";
-import {newWeatherWidget} from "../API/back";
+import {newSpaceXWidget} from "../API/back";
 import {Button, Card, Form} from "react-bootstrap";
 
-export const CreateSpaceXWidget = ({title, children}) => {
+const unitToCoef = {
+    "Seconds": 1,
+    "Minutes": 60,
+    "Hours": 60*60
+}
+
+export const CreateSpaceXWidget = ({widgetMaker, title, children}) => {
     const select = useRef()
     const timer = useRef()
+    const timeUnit = useRef()
     const {dbUser} = useDbUser()
     const handleSubmit = async () => {
         try {
-            //TODO: update
-            await newWeatherWidget(dbUser.id, {})
+            await newSpaceXWidget(dbUser.id, widgetMaker(select.current.value, timer.current.value * 1000 * unitToCoef[timeUnit.current.value]))
         } catch (e) {
             console.error(e)
         }
@@ -27,7 +33,14 @@ export const CreateSpaceXWidget = ({title, children}) => {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group id ='sw-timer'>
-                        <Form.Control ref={timer} placeholder='Timer in minutes' required/>
+                        <Form.Control ref={timer} placeholder='Timer' required/>
+                    </Form.Group>
+                    <Form.Group id ='cg-time-unit'>
+                        <Form.Control ref={timeUnit} as='select'>
+                            <option>Seconds</option>
+                            <option>Minutes</option>
+                            <option>Hours</option>
+                        </Form.Control>
                     </Form.Group>
                     <Button type='submit'>Create</Button>
                 </Form>
@@ -36,8 +49,19 @@ export const CreateSpaceXWidget = ({title, children}) => {
     )
 }
 
+const riSelectToQueryParam = {
+    'Falcon 1': 'falcon1',
+    'Falcon 9': 'falcon9',
+    'Falcon Heavy': 'falcon_heavy'
+}
+
 export const CreateRocketInfo = () => (
-    <CreateSpaceXWidget title='Information about a Rocket model'>
+    <CreateSpaceXWidget title='Information about a Rocket model' widgetMaker={(value, timer) => {
+        return ({
+            rocketId: riSelectToQueryParam[value],
+            timer: timer
+        })
+    }}>
         <option>Falcon 1</option>
         <option>Falcon 9</option>
         <option>Falcon Heavy</option>
@@ -45,7 +69,12 @@ export const CreateRocketInfo = () => (
 )
 
 export const CreateSpaceXInfo = () => (
-    <CreateSpaceXWidget title='A fact about SpaceX'>
+    <CreateSpaceXWidget rocketinfo={false} title='A fact about SpaceX' widgetMaker={(value, timer) => {
+        return ({
+            desiredInfo: value,
+            timer: timer
+        })
+    }}>
         <option>When was it created?</option>
         <option>By who was it founded?</option>
         <option>How many employees does it have?</option>
