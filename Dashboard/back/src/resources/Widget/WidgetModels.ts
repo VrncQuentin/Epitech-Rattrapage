@@ -6,6 +6,7 @@ export async function createWeatherWidget(userId: string, widget: any): Promise<
 		data: widget
 	})
 }
+
 export async function createGithubWidget(userId: string, widget: any): Promise<GithubWidget> {
 	return await db.githubWidget.create({
 		data: widget
@@ -18,6 +19,25 @@ export async function createSpaceXWidget(userId: string, widget: any): Promise<S
 	})
 }
 
+export async function updateWeatherWidget(id: string, widget: any): Promise<WeatherWidget> {
+	return await db.weatherWidget.update({
+		where: {id: id},
+		data: widget
+	})
+}
+export async function updateGithubWidget(id: string, widget: any): Promise<GithubWidget> {
+	return await db.githubWidget.update({
+		where: {id: id},
+		data: widget
+	})
+}
+
+export async function updateSpaceXWidget(id: string, widget: any): Promise<SpaceXWidget> {
+	return await db.spaceXWidget.update({
+		where: {id: id},
+		data: widget
+	})
+}
 
 export async function deleteWeatherWidget(id: string): Promise<WeatherWidget> {
 	return await db.weatherWidget.delete({

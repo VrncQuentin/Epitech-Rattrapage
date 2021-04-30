@@ -37,13 +37,4 @@ router.post(
 	}),
 );
 
-// Create a widget and connect it to a user
-router.post(
-	'/widget/:id',
-	handler(async (req, res) => {
-		const user = await controllers.updateUser(req.params.id, req.body);
-		res.send(user);
-	}),
-);
-
 export default router;

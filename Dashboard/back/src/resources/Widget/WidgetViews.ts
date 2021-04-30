@@ -33,6 +33,34 @@ router.post('/spacex/:id',
 	}),
 );
 
+// Update a widget
+router.patch(
+	'/weather/:id',
+	handler(async (req, res) => {
+		console.log('create weather')
+		const weather = await controllers.updateWeatherWidget(req.params.id, req.body);
+		res.status(httpStatus.CREATED).send(weather);
+	}),
+);
+
+router.patch(
+	'/github/:id',
+	handler(async (req, res) => {
+		console.log('create github')
+		const weather = await controllers.updateGithubWidget(req.params.id, req.body);
+		res.status(httpStatus.CREATED).send(weather);
+	}),
+);
+
+router.patch('/spacex/:id',
+	handler(async (req, res) => {
+		console.log('create spacex')
+		const weather = await controllers.updateSpaceXWidget(req.params.id, req.body);
+		res.status(httpStatus.CREATED).send(weather);
+	}),
+);
+
+// Delete a widget
 router.delete(
 	'/weather/:id',
 	handler(async (req, res) => {
