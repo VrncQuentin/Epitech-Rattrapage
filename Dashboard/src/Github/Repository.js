@@ -1,32 +1,47 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Alert} from "react-bootstrap";
 
-import {getRepo} from "./api";
+import {getUser} from "./api";
 import {Widget} from "../Dashboard/Widget";
+import {deleteGithubWidget} from "../API/back";
 
-const UserRepo = ({token, asked, timer, id}) => {
+const User = ({token, asked, timer, id}) => {
     const [err, setErr] = useState('')
-    const [repo, setRepo] = useState(null)
+    const [user, setUser] = useState(null)
     const update = async () => {
         try {
-            const data = await getRepo(token, asked);
-            setRepo(data)
+            const data = await getUser(token, asked);
+            console.log(data)
+            setUser(data)
         } catch (e) {
             setErr("couldn't fetch repository: " + e.message)
         }
     }
 
+    useEffect(() => {
+        (async () => update())()
+    }, [])
+
     return (
         <Widget name={asked}
                 updateWidget={update}
                 timer={timer}
-        >
+                deleteWidget={async () => {
+                    await deleteGithubWidget(id)
+                    window.location.reload()
+                }}>
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
-                || (repo !== null ? repo : '')
+                || (user === null ? '' : (
+                    <>
+                        {user.bio}{<br/>}{<br/>}
+                        Located in {user.location} & {user.hireable ? 'is' : "isn't"} hire-able{<br/>}
+                        Following {user.following} | Followed by {user.followers}{<br/>}
+                    </>
+                ))
             }
         </Widget>
     )
 };
 
-export default UserRepo;
+export default User;

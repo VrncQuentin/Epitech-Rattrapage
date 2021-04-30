@@ -27,11 +27,11 @@ export const CreateGithubWidget = () => {
 
     return (
         <Card>
-            <Card.Header>Information about a Repository</Card.Header>
+            <Card.Header>Information about a User</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group id ='cg-param'>
-                        <Form.Control ref={repo} placeholder='Repository' required/>
+                        <Form.Control ref={repo} placeholder='User' required/>
                     </Form.Group>
                     <Form.Group id ='cg-timer'>
                         <Form.Control ref={timer} placeholder='Timer' required/>

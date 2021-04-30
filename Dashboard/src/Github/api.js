@@ -1,19 +1,11 @@
 const { Octokit } = require("@octokit/core");
 
-export const getRepo = (token, repo) => {
+export const getUser = (token, user) => {
     const octokit = new Octokit({auth: token})
 
     return new Promise((resolve, reject) => {
-        octokit.request('POST /user/projects', {
-            name: repo,
-            mediaType: {
-                previews: ['inertia']
-            }}).then(r => {
-                console.log(r)
-                resolve({
-                    name: r.data.name,
-                    body: r.data.body
-                })
-            }).catch(e => reject(e))
+        octokit.request('GET /users/{username}', {username: user})
+            .then(r => resolve(r.data))
+            .catch(e => reject(e))
     })
 }
