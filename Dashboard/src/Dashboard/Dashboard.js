@@ -3,12 +3,23 @@ import Sidebar from "./Sidebar";
 import {useDbUser} from "./Context";
 import Weather from "../OpenWeather/Weather";
 import Temperature from "../OpenWeather/Temperarture";
+import {Rocket} from "../SpaceX/Rocket";
+import {SpaceX} from "../SpaceX/SpaceX";
+import UserRepo from "../Github/Repository";
 
 const dispatchWeatherWidgets = (e) => {
     if (e.weather) {
         return <Weather location={e.param} timer={e.timer} id={e.id}/>
     } else {
         return <Temperature location={e.param} timer={e.timer} id={e.id}/>
+    }
+}
+
+const dispatchSpaceXWidget = (e) => {
+    if (e.rocketId !== undefined) {
+        return <Rocket type={e.rocketId} timer={e.timer} id={e.id}/>
+    } else if (e.desiredInfo !== undefined) {
+        return <SpaceX asked={e.desiredInfo} timer={e.timer} id={e.id}/>
     }
 }
 
@@ -25,7 +36,16 @@ const Dashboard = () => {
                 </Row>
                 <Row className='justify-content-center'>
                     {(dbUserErr && <Alert variant='danger'>{dbUserErr}</Alert>)
-                    || dbUser.weather.map(dispatchWeatherWidgets)}
+                    || <>
+                        {dbUser.weather.map(dispatchWeatherWidgets)}
+                        {dbUser.spacex.map(dispatchSpaceXWidget)}
+                        {dbUser.github.map((e) => (<UserRepo token={dbUser.accessToken}
+                                                             asked={e.repo}
+                                                             timer={e.timer}
+                                                             id={e.id}
+                        />))}
+                    </>
+                    }
                 </Row>
             </Col>
         </Row></Container>

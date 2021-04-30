@@ -9,7 +9,7 @@ export default function Signup() {
     const emailRef = useRef()
     const passRef = useRef()
     const passConfRef = useRef()
-    const {signupWithEmailAndPassword, signupWithGithub, user} = useAuth()
+    const {signupWithEmailAndPassword, signupWithGithub} = useAuth()
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState('')
     const history = useHistory()

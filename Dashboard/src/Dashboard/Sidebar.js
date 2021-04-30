@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import {Button, Card, Container, Nav, Row} from "react-bootstrap";
+import {Button, Card, Container, Nav} from "react-bootstrap";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import './Dashboard.css'
 import {useAuth} from "../Auth/context";
 import {useDbUser} from "./Context";
 import * as back from "../API/back";
-import {CreateTemperature, CreateWeather, CreateWeatherWidget} from "../OpenWeather/Create";
+import {CreateTemperature, CreateWeather} from "../OpenWeather/Create";
 import {CreateRocketInfo, CreateSpaceXInfo} from "../SpaceX/Create";
 import {CreateGithubWidget} from "../Github/Create";
 

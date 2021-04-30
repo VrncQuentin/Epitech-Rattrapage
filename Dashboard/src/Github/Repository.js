@@ -4,7 +4,7 @@ import {Alert} from "react-bootstrap";
 import {getRepo} from "./api";
 import {Widget} from "../Dashboard/Widget";
 
-const UserRepo = ({token, asked, timer}) => {
+const UserRepo = ({token, asked, timer, id}) => {
     const [err, setErr] = useState('')
     const [repo, setRepo] = useState(null)
     const update = async () => {
