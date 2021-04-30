@@ -7,7 +7,7 @@ import {deleteWeatherWidget} from "../API/back";
 
 const Weather = ({location, timer, id}) => {
     const [err, setErr] = useState('')
-    const [weather, setWeather] = useState()
+    const [weather, setWeather] = useState(null)
     const update = async () => {
         try {
             const data = await getLocalWeather(location);
@@ -28,12 +28,10 @@ const Weather = ({location, timer, id}) => {
                 deleteWidget={async () => {
                     await deleteWeatherWidget(id)
                     window.location.reload()
-                }}
-        >
+                }}>
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
-                || (weather === null ? "" : weather.weather + '\n')
-                + (weather === null ? "" : weather.desc)
+                || (weather === null ? "" : weather.desc)
             }
         </Widget>
     )
