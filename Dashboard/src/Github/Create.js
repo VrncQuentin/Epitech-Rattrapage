@@ -1,18 +1,24 @@
 import {useRef} from "react";
 import {useDbUser} from "../Dashboard/Context";
-import {newWeatherWidget} from "../API/back";
+import {newGithubWidget} from "../API/back";
 import {Button, Card, Form} from "react-bootstrap";
 
-export const CreateWeatherWidget = ({weather}) => {
-    const city = useRef()
+const unitToCoef = {
+    "Seconds": 1,
+    "Minutes": 60,
+    "Hours": 60*60
+}
+
+export const CreateGithubWidget = () => {
+    const repo = useRef()
     const timer = useRef()
+    const timeUnit = useRef()
     const {dbUser} = useDbUser()
     const handleSubmit = async () => {
         try {
-            await newWeatherWidget(dbUser.id, {
-                param: city.current.value,
-                timer: timer.current.value * 1000 * 60,
-                weather: weather,
+            await newGithubWidget(dbUser.id, {
+                repo: repo.current.value,
+                timer: timer.current.value * 1000 * unitToCoef[timeUnit.current.value]
             })
         } catch (e) {
             console.error(e)
@@ -21,14 +27,21 @@ export const CreateWeatherWidget = ({weather}) => {
 
     return (
         <Card>
-            <Card.Header>{weather ? 'Weather' : 'Temperature'} in city</Card.Header>
+            <Card.Header>Information about a Repository</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group id ='cw-param'>
-                        <Form.Control ref={city} placeholder='City' required/>
+                    <Form.Group id ='cg-param'>
+                        <Form.Control ref={repo} placeholder='Repository' required/>
                     </Form.Group>
-                    <Form.Group id ='cw-timer'>
-                        <Form.Control ref={timer} placeholder='Timer in minutes' required/>
+                    <Form.Group id ='cg-timer'>
+                        <Form.Control ref={timer} placeholder='Timer' required/>
+                    </Form.Group>
+                    <Form.Group id ='cg-time-unit'>
+                        <Form.Control ref={timeUnit} as='select'>
+                            <option>Seconds</option>
+                            <option>Minutes</option>
+                            <option>Hours</option>
+                        </Form.Control>
                     </Form.Group>
                     <Button type='submit'>Create</Button>
                 </Form>
@@ -36,6 +49,3 @@ export const CreateWeatherWidget = ({weather}) => {
         </Card>
     )
 }
-
-export const CreateWeather = () => (<CreateWeatherWidget weather={true}/>)
-export const CreateTemperature = () => (<CreateWeatherWidget weather={false}/>)
