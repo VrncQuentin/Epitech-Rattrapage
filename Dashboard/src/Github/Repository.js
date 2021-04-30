@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import {Alert} from "react-bootstrap";
+import {Alert, Modal} from "react-bootstrap";
 
 import {getUser} from "./api";
 import {Widget} from "../Dashboard/Widget";
 import {deleteGithubWidget} from "../API/back";
+import {UpdateGithubWidget} from "./Update";
 
 const User = ({token, asked, timer, id}) => {
     const [err, setErr] = useState('')
@@ -28,7 +29,9 @@ const User = ({token, asked, timer, id}) => {
                 deleteWidget={async () => {
                     await deleteGithubWidget(id)
                     window.location.reload()
-                }}>
+                }}
+                configModal={<Modal.Body><UpdateGithubWidget id={id}/></Modal.Body>}
+        >
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
                 || (user === null ? '' : (
