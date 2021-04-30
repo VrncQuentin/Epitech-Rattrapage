@@ -16,9 +16,9 @@ const dispatchWeatherWidgets = (e) => {
 }
 
 const dispatchSpaceXWidget = (e) => {
-    if (e.rocketId !== undefined) {
+    if (e.rocketId !== null) {
         return <Rocket type={e.rocketId} timer={e.timer} id={e.id}/>
-    } else if (e.desiredInfo !== undefined) {
+    } else if (e.desiredInfo !== null) {
         return <SpaceX asked={e.desiredInfo} timer={e.timer} id={e.id}/>
     }
 }
