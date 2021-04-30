@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {Alert} from "react-bootstrap";
 
-import {getRepo} from "../API/GitHub";
-import {Widget} from "../../Dashboard/Widget";
+import {getRepo} from "./api";
+import {Widget} from "../Dashboard/Widget";
 
 const UserRepo = ({token, asked, timer}) => {
     const [err, setErr] = useState('')
