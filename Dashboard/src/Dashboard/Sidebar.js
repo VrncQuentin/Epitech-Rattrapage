@@ -22,23 +22,24 @@ const Service = ({name, used, toggleUsed, children}) => {
 }
 
 const Sidebar = () => {
-    const {logout} = useAuth()
+    const {loginWithGithub, logout} = useAuth()
     const {dbUser} = useDbUser()
     const toggle = (value, setter) => {
         (async () => {
             try {
                 await back.updateUser(dbUser.id, value)
+                setter();
             } catch (e) {
                 console.log(e)
             }
         })();
-        setter();
     }
 
     const [weatherUsed, setWeatherUsed] = useState(dbUser.weatherUsed)
     const [githubUsed, setGithubUsed] = useState(dbUser.githubUsed)
     const [spacexUsed, setSpacexUsed] = useState(dbUser.spacexUsed)
 
+    console.log(dbUser)
     return (
         <>
             <Nav className="col-md-12 d-none d-md-block bg-light sidebar text-center">
@@ -52,7 +53,18 @@ const Sidebar = () => {
                 </Service>
                 <Service name='Github' used={githubUsed} toggleUsed={() => toggle(
                     {githubUsed: !githubUsed},
-                    () => setGithubUsed(!githubUsed)
+                    async () => {
+                        if (dbUser.accessToken === 'NOT') {
+                            try {
+                                await loginWithGithub()
+                                setGithubUsed(!githubUsed)
+                            } catch (e) {
+                                alert(e.message)
+                            }
+                        } else {
+                            setGithubUsed(!githubUsed)
+                        }
+                    }
                 )}>
                     <CreateGithubWidget/>
                 </Service>

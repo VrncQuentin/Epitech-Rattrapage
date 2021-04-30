@@ -19,7 +19,7 @@ export const DbUserProvider = ({children}) => {
                 setDbUser(data.data)
             } catch (e) {
                 try {
-                    const data = await back.newUser(user.uid, token)
+                    const data = await back.newUser(user.uid, token !== '' ? token : 'NOT')
                     setErr('')
                     setDbUser(data.data)
                 } catch (e) {
