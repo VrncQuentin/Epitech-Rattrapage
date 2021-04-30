@@ -18,7 +18,9 @@ export const Widget = ({name, deleteWidget, configModal, updateWidget, timer, ch
                 <Button onClick={toggleShow}><Settings/></Button>
             </Toast.Header>
             <Toast.Body>
-                {children}
+                <div className='text-center'>
+                    {children}
+                </div>
             </Toast.Body>
             <Modal centered show={show} onHide={toggleShow}>
                 {configModal}

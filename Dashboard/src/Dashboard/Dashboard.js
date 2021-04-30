@@ -5,7 +5,7 @@ import Weather from "../OpenWeather/Weather";
 import Temperature from "../OpenWeather/Temperarture";
 import {Rocket} from "../SpaceX/Rocket";
 import {SpaceX} from "../SpaceX/SpaceX";
-import UserRepo from "../Github/Repository";
+import User from "../Github/Repository";
 
 const dispatchWeatherWidgets = (e) => {
     if (e.weather) {
@@ -37,12 +37,12 @@ const Dashboard = () => {
                 <Row className='justify-content-center'>
                     {(dbUserErr && <Alert variant='danger'>{dbUserErr}</Alert>)
                     || <>
-                        {dbUser.weather.map(dispatchWeatherWidgets)}
-                        {dbUser.spacex.map(dispatchSpaceXWidget)}
-                        {dbUser.github.map((e) => (<UserRepo token={dbUser.accessToken}
-                                                             asked={e.repo}
-                                                             timer={e.timer}
-                                                             id={e.id}
+                        {dbUser.weatherUsed && dbUser.weather.map(dispatchWeatherWidgets)}
+                        {dbUser.spacexUsed && dbUser.spacex.map(dispatchSpaceXWidget)}
+                        {dbUser.githubUsed && dbUser.github.map((e) => (<User token={dbUser.accessToken}
+                                                                              asked={e.repo}
+                                                                              timer={e.timer}
+                                                                              id={e.id}
                         />))}
                     </>
                     }

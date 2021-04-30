@@ -9,7 +9,7 @@ export const DbUserProvider = ({children}) => {
     const [dbUser, setDbUser] = useState()
     const [err, setErr] = useState('')
     const [loading, setLoading] = useState(true)
-    const {user} = useAuth()
+    const {user, token} = useAuth()
 
     useEffect(() => {
         (async () => {
@@ -19,7 +19,7 @@ export const DbUserProvider = ({children}) => {
                 setDbUser(data.data)
             } catch (e) {
                 try {
-                    const data = await back.newUser(user.uid, user.l)
+                    const data = await back.newUser(user.uid, token)
                     setErr('')
                     setDbUser(data.data)
                 } catch (e) {
@@ -28,7 +28,7 @@ export const DbUserProvider = ({children}) => {
             }
             setLoading(false)
         })()
-    }, [user.uid, user.l, setDbUser, setErr])
+    }, [user.uid, token, setDbUser, setErr])
 
     return (
         <DbUserContext.Provider value={{
