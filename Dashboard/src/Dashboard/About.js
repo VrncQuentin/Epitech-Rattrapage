@@ -6,8 +6,12 @@ export default function About() {
 
     useEffect(() => {
         (async () => {
-            const data = await publicIp.v4()
-            setIp(data)
+            try {
+                const data = await publicIp.v4()
+                setIp(data)
+            } catch (e) {
+                setIp("couldn't fetch ip: " + e.message)
+            }
         })();
     }, [])
 
@@ -38,14 +42,14 @@ export default function About() {
                 "name": "spacex",
                 "widgets": [
                     {
-                        "name": "next_flight",
-                        "description": "Display info about the next SpaceX's flight",
-                        "params": []
+                        "name": "spacex_info",
+                        "description": "Display info about SpaceX",
+                        "params": [{"name": "info", "type": "string"}]
                     },
                     {
-                        "name": "latest_flight",
-                        "description": "Display info about the latest SpaceX's flight",
-                        "params": []
+                        "name": "rocket_info",
+                        "description": "Display info about a rocket from SpaceX",
+                        "params": [{"name": "rocket", "type": "string"}]
                     }
                 ]
             },
