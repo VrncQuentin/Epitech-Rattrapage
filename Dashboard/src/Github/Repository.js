@@ -11,7 +11,6 @@ const User = ({token, asked, timer, id}) => {
     const update = async () => {
         try {
             const data = await getUser(token, asked);
-            console.log(data)
             setUser(data)
         } catch (e) {
             setErr("couldn't fetch repository: " + e.message)

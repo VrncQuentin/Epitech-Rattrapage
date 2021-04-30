@@ -24,7 +24,6 @@ export const SpaceX = ({asked, timer, id}) => {
     const update = async () => {
         try {
             const data = await getInfo(asked)
-            console.log(data)
             setInfo(data)
         } catch (e) {
             setErr("couldn't fetch info: " + e.message)
@@ -35,7 +34,6 @@ export const SpaceX = ({asked, timer, id}) => {
         (async () => update())()
     }, [])
 
-    console.log(info)
     return (
         <Widget name={queryParamToQuestion[asked]}
                 updateWidget={update}

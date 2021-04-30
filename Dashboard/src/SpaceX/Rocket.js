@@ -15,7 +15,6 @@ export const Rocket = ({type, timer, id}) => {
     const update = async () => {
         try {
             const data = await getRocketInfo(type)
-            console.log(data)
             setRocket(data)
         } catch (e) {
             setErr("couldn't fetch rocket: " + e.message)
