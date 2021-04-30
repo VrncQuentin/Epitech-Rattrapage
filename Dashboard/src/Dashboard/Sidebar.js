@@ -7,6 +7,7 @@ import {useDbUser} from "./Context";
 import * as back from "../API/back";
 import {CreateTemperature, CreateWeather, CreateWeatherWidget} from "../OpenWeather/Create";
 import {CreateRocketInfo, CreateSpaceXInfo} from "../SpaceX/Create";
+import {CreateGithubWidget} from "../Github/Create";
 
 const Service = ({name, used, toggleUsed, children}) => {
     return (
@@ -53,6 +54,7 @@ const Sidebar = () => {
                     {githubUsed: !githubUsed},
                     () => setGithubUsed(!githubUsed)
                 )}>
+                    <CreateGithubWidget/>
                 </Service>
                 <Service name='SpaceX' used={spacexUsed} toggleUsed={() => toggle(
                     {spacexUsed: !spacexUsed},
