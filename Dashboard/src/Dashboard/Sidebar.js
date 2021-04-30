@@ -39,7 +39,6 @@ const Sidebar = () => {
     const [githubUsed, setGithubUsed] = useState(dbUser.githubUsed)
     const [spacexUsed, setSpacexUsed] = useState(dbUser.spacexUsed)
 
-    console.log(dbUser)
     return (
         <>
             <Nav className="col-md-12 d-none d-md-block bg-light sidebar text-center">

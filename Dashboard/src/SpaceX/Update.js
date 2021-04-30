@@ -1,6 +1,7 @@
 import {useRef} from "react";
-import {updateSpaceXWidget} from "../API/back";
+import {deleteSpaceXWidget, newSpaceXWidget} from "../API/back";
 import {Button, Card, Form} from "react-bootstrap";
+import {useDbUser} from "../Dashboard/Context";
 
 const unitToCoef = {
     "Seconds": 1,
@@ -12,9 +13,12 @@ export const UpdateSpaceXWidget = ({id, widgetMaker, title, children}) => {
     const select = useRef()
     const timer = useRef()
     const timeUnit = useRef()
-    const handleSubmit = async () => {
+    const {dbUser} = useDbUser()
+    const handleSubmit = async (e) => {
         try {
-            await updateSpaceXWidget(id, widgetMaker(select.current.value, timer.current.value * 1000 * unitToCoef[timeUnit.current.value]))
+            e.preventDefault()
+            await deleteSpaceXWidget(id)
+            await newSpaceXWidget(dbUser.id, widgetMaker(select.current.value, timer.current.value * 1000 * unitToCoef[timeUnit.current.value]))
             window.location.reload()
         } catch (e) {
             console.error(e)

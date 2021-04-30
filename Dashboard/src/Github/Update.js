@@ -1,6 +1,7 @@
 import {useRef} from "react";
-import {updateGithubWidget} from "../API/back";
+import {deleteGithubWidget, newGithubWidget, updateGithubWidget} from "../API/back";
 import {Button, Card, Form} from "react-bootstrap";
+import {useDbUser} from "../Dashboard/Context";
 
 const unitToCoef = {
     "Seconds": 1,
@@ -12,9 +13,12 @@ export const UpdateGithubWidget = ({id}) => {
     const repo = useRef()
     const timer = useRef()
     const timeUnit = useRef()
-    const handleSubmit = async () => {
+    const {dbUser} = useDbUser()
+    const handleSubmit = async (e) => {
         try {
-            await updateGithubWidget(id, {
+            e.preventDefault()
+            await deleteGithubWidget(id)
+            await newGithubWidget(dbUser.id, {
                 repo: repo.current.value,
                 timer: timer.current.value * 1000 * unitToCoef[timeUnit.current.value]
             })

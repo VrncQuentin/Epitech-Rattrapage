@@ -1,6 +1,7 @@
 import {useRef} from "react";
-import {updateWeatherWidget} from "../API/back";
+import {deleteWeatherWidget, newWeatherWidget} from "../API/back";
 import {Button, Card, Form} from "react-bootstrap";
+import {useDbUser} from "../Dashboard/Context";
 
 const unitToCoef = {
     "Seconds": 1,
@@ -12,9 +13,12 @@ export const UpdateWeatherWidget = ({id, weather}) => {
     const city = useRef()
     const timer = useRef()
     const timeUnit = useRef()
-    const handleSubmit = async () => {
+    const {dbUser} = useDbUser()
+    const handleSubmit = async (e) => {
         try {
-            await updateWeatherWidget(id, {
+            e.preventDefault()
+            await deleteWeatherWidget(id)
+            await newWeatherWidget(dbUser.id, {
                 param: city.current.value,
                 timer: timer.current.value * 1000 * unitToCoef[timeUnit.current.value],
                 weather: weather,
