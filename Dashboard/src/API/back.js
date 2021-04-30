@@ -47,6 +47,14 @@ const newWidget = (which, userId, widget) => {
     })
 }
 
+const updateWidget = (which, id, value) => {
+    return new Promise((resolve, reject) => {
+        requester.post(widgetUrl + which + '/' + id, value)
+            .then(res => resolve(res))
+            .catch(e => reject(e))
+    })
+}
+
 const deleteWidget = (which, id) => {
     return new Promise((resolve, reject) => {
         requester.delete(widgetUrl + which + '/' + id)
@@ -56,10 +64,13 @@ const deleteWidget = (which, id) => {
 }
 
 export const newWeatherWidget = (userId, widget) => newWidget('weather', userId, widget)
+export const updateWeatherWidget = (id, widget) => updateWidget('weather', id, widget)
 export const deleteWeatherWidget = (id) => deleteWidget('weather', id)
 
 export const newGithubWidget = (userId, widget) => newWidget('github', userId, widget)
+export const updateGithubWidget = (id, widget) => updateWidget('github', id, widget)
 export const deleteGithubWidget = (id) => deleteWidget('github', id)
 
 export const newSpaceXWidget = (userId, widget) => newWidget('spacex', userId, widget)
+export const updateSpaceXWidget = (id, widget) => updateWidget('spacex', id, widget)
 export const deleteSpaceXWidget = (id) => deleteWidget('spacex', id)
