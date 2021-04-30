@@ -51,8 +51,7 @@ export const CreateSpaceXWidget = ({widgetMaker, title, children}) => {
 
 const riSelectToQueryParam = {
     'Falcon 1': 'falcon1',
-    'Falcon 9': 'falcon9',
-    'Falcon Heavy': 'falcon_heavy'
+    'Falcon 9': 'falcon9'
 }
 
 export const CreateRocketInfo = () => (
@@ -64,19 +63,44 @@ export const CreateRocketInfo = () => (
     }}>
         <option>Falcon 1</option>
         <option>Falcon 9</option>
-        <option>Falcon Heavy</option>
     </CreateSpaceXWidget>
 )
+
+/**
+ * Corresponds to:
+ * ceo: "Elon Musk"
+ coo: "Gwynne Shotwell"
+ cto: "Elon Musk"
+ cto_propulsion: "Tom Mueller"
+ employees: 7000
+ founded: 2002
+ founder: "Elon Musk"
+ headquarters: {address: "Rocket Road", city: "Hawthorne", state: "California"}
+ launch_sites: 3
+ links: {website: "https://www.spacex.com/", flickr: "https://www.flickr.com/photos/spacex/", twitter: "https://twitter.com/SpaceX", elon_twitter: "https://twitter.com/elonmusk"}
+ name: "SpaceX"
+ summary: "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets."
+ test_sites: 1
+ valuation: 27500000000
+ vehicles: 3
+ */
+const siSelectToQueryParam = {
+    'When was it created?': 'founded',
+    'By who was it founded?': 'founder',
+    'How many employees does it have?': 'employees',
+    'How many rocket does it have?': 'vehicles'
+}
 
 export const CreateSpaceXInfo = () => (
     <CreateSpaceXWidget rocketinfo={false} title='A fact about SpaceX' widgetMaker={(value, timer) => {
         return ({
-            desiredInfo: value,
+            desiredInfo: siSelectToQueryParam[value],
             timer: timer
         })
     }}>
         <option>When was it created?</option>
         <option>By who was it founded?</option>
         <option>How many employees does it have?</option>
+        <option>How many rocket does it have?</option>
     </CreateSpaceXWidget>
 )

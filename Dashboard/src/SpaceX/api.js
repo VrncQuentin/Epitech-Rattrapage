@@ -7,7 +7,7 @@ const baseUrl = "https://api.spacexdata.com/v3/"
 export const getRocketInfo = (rocket) => {
     return new Promise((resolve, reject) => {
         requester.get(baseUrl + 'rockets/' + rocket)
-            .then(r => resolve(r))
+            .then(r => resolve(r.data))
             .catch(e => reject(e))
     })
 }
@@ -15,7 +15,7 @@ export const getRocketInfo = (rocket) => {
 export const getInfo = (about) => {
     return new Promise((resolve, reject) => {
         requester.get(baseUrl + 'info/')
-            .then(r => resolve(r[about]))
+            .then(r => resolve(r.data[about]))
             .catch(e => reject(e))
     })
 }

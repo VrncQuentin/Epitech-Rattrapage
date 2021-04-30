@@ -4,6 +4,11 @@ import {Widget} from "../Dashboard/Widget";
 import {getRocketInfo} from "./api";
 import {Alert} from "react-bootstrap";
 
+const queryParamToName = {
+    'falcon1': 'Falcon 1',
+    'falcon9': 'Falcon 9'
+}
+
 export const Rocket = ({type, timer, id}) => {
     const [err, setErr] = useState('')
     const [rocket, setRocket] = useState(null)
@@ -22,7 +27,7 @@ export const Rocket = ({type, timer, id}) => {
     }, [])
 
     return (
-        <Widget name={type}
+        <Widget name={queryParamToName[type]}
                 updateWidget={update}
                 timer={timer}
                 deleteWidget={async () => {
@@ -31,6 +36,14 @@ export const Rocket = ({type, timer, id}) => {
                 }}>
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
+                || (rocket !== null && <>
+                    The {queryParamToName[type]} is currently {rocket.active ? 'active' : 'inactive'}{<br/>}
+                    It mesures {rocket.height.meters} meters, with {rocket.stages} stage, and weighs {rocket.mass.kg}.{<br/>}
+                    Its playload can be:{<br/>}
+                    {rocket.payload_weights.map((w) => <>{'- ' + w.name + ': ' + w.kg + 'kg'}{<br/>}</>)}
+                    It costs {rocket.cost_per_launch}$ to launch.
+                </>)
+
             }
         </Widget>
     )
