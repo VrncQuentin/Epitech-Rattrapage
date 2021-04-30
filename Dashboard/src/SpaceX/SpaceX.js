@@ -1,8 +1,9 @@
 import {deleteSpaceXWidget} from "../API/back";
 import {useEffect, useState} from "react";
-import {Alert} from "react-bootstrap";
+import {Alert, Modal} from "react-bootstrap";
 import {Widget} from "../Dashboard/Widget";
 import {getInfo} from "./api";
+import {UpdateSpaceXInfo} from "./Update";
 
 const queryParamToQuestion = {
     'founded': 'When was it created?',
@@ -41,7 +42,8 @@ export const SpaceX = ({asked, timer, id}) => {
                 deleteWidget={async () => {
                     await deleteSpaceXWidget(id)
                     window.location.reload()
-                }}>
+                }}
+                configModal={<Modal.Body><UpdateSpaceXInfo id={id}/></Modal.Body>}>
             {(err && <Alert variant='danger'>{err}</Alert>) || queryParamToAnswer[asked](info)}
         </Widget>
     )

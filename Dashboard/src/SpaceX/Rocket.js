@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import {deleteSpaceXWidget} from "../API/back";
 import {Widget} from "../Dashboard/Widget";
 import {getRocketInfo} from "./api";
-import {Alert} from "react-bootstrap";
+import {Alert, Modal} from "react-bootstrap";
+import {UpdateRocketInfo} from "./Update";
 
 const queryParamToName = {
     'falcon1': 'Falcon 1',
@@ -32,7 +33,8 @@ export const Rocket = ({type, timer, id}) => {
                 deleteWidget={async () => {
                     await deleteSpaceXWidget(id)
                     window.location.reload()
-                }}>
+                }}
+                configModal={<Modal.Body><UpdateRocketInfo id={id}/></Modal.Body>}>
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
                 || (rocket !== null && <>
