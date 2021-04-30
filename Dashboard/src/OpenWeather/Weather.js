@@ -2,8 +2,9 @@ import {useEffect, useState} from "react";
 
 import {getLocalWeather} from "./api";
 import {Widget} from '../Dashboard/Widget';
-import {Alert, } from "react-bootstrap";
+import {Alert, Modal} from "react-bootstrap";
 import {deleteWeatherWidget} from "../API/back";
+import {UpdateWeather} from "./Update";
 
 const Weather = ({location, timer, id}) => {
     const [err, setErr] = useState('')
@@ -28,7 +29,8 @@ const Weather = ({location, timer, id}) => {
                 deleteWidget={async () => {
                     await deleteWeatherWidget(id)
                     window.location.reload()
-                }}>
+                }}
+                configModal={<Modal.Body><UpdateWeather id={id}/></Modal.Body>}>
             {
                 (err && <Alert variant='danger'>{err}</Alert>)
                 || (weather === null ? "" : weather.desc)
