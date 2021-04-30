@@ -1,18 +1,18 @@
 version: '3.8'
 services:
-#  dashboard:
-#    build: .
-#    ports:
-#      - 8080:8080
-#    networks:
-#      - front
-#    depends_on:
-#      - back
+  dashboard:
+    build: .
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    networks:
+      - front
+    depends_on:
+      - back
 
   back:
     build: back
-    expose:
-      - 3000
     ports:
       - 3000:3000
     depends_on:
@@ -27,8 +27,6 @@ services:
 
   db:
     image: postgres:latest
-    expose:
-      - 5432
     ports:
       - 5432:5432
     environment:
